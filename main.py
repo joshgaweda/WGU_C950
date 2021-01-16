@@ -136,9 +136,9 @@ def main():
                 # AAA, ZZZ not found in the original string
                 instructions = '-' # apply your error handling
 
-            print('ID       ADDRESS                                      CITY             ZIP      DEADLINE         STATUS                                   INSTRUCTIONS\n')
-            print('---------------------------------------------------------------------------------------------------------------------------------------------------------------\n')
-            print('%s     %s                          %s            %s        %s         %s                                         %s' % (id, address, city, zip_code, deadline, status, instructions))
+            print('ID       ADDRESS                                      CITY             ZIP      DEADLINE         STATUS                                   INSTRUCTIONS\n'
+                  '------------------------------------------------------------------------------------------------------------------------------------------------------\n'
+                  '%s     %s                           %s            %s        %s         %s                                         %s                                    ' % (id, address, city, zip_code, deadline, status, instructions))
             input()
         
         # 0) Exit program

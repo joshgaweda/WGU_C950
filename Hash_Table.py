@@ -306,12 +306,18 @@ class HashTable:
 
         Space-time complexity = O(N)
         '''
-
-        return_string = 'ID       ADDRESS                                      CITY             ZIP      DEADLINE         STATUS                                   INSTRUCTIONS\n'
+        idstring = "ID"
+        addressstring = "ADDRESS"
+        citystring = "CITY"
+        zipstring = "ZIP"
+        deadlinestring = "DEADLINE"
+        statusstring = "STATUS"
+        instructionstring = "INSTRUCTIONS" 
+        return_string = f'{idstring:^10}|{addressstring:^42}|{citystring:^20}|{zipstring:^10}|{deadlinestring:^10}|{statusstring:^35}|{instructionstring:^20}\n'
         return_string += '---------------------------------------------------------------------------------------------------------------------------------------------------------------\n'
 
         for p in self.package_table:
             if type(p) == Package:
-                return_string += f'{p.package_id}\t{p.address:<42} {p.city:<18} {p.zip_code}\t{p.deadline:<8}\t{p.status:<35}\t{p.instructions}\n'
+                return_string += f'{p.package_id:^10}|{p.address:^42}|{p.city:^20}|{p.zip_code:^10}|{p.deadline:^10}|{p.status:^35}|{p.instructions:^20}\n'
         
         return return_string
