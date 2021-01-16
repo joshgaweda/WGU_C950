@@ -1,11 +1,7 @@
-# Alex Irvine
-# C950 submission
-# WGU Student # 000955107
-# Date = 2020/7/15
 
 from Package import Package
 import csv
-import re
+
 
 
 class HashTable:
@@ -258,6 +254,9 @@ class HashTable:
 
             # Attributes = address
             if type(p) == Package and attribute == 'address' and value in p.address.strip().lower():
+                found.append(p)
+
+            elif type(p) == Package and attribute == 'address_id' and value in p.address_id.strip().lower():
                 found.append(p)
 
             # Attributes = deadline
