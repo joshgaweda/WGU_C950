@@ -1,11 +1,3 @@
-# Alex Irvine
-# C950 submission
-# WGU Student # 000955107
-# Date = 2020/7/15
-
-from Package import Package
-from Hash_Table import HashTable
-from decimal import Decimal
 import datetime
 
 class Edge:
@@ -38,7 +30,7 @@ class Truck:
         self.millage = 0.0
         self.current_location = 0
         self.miles_to_next = 0.0
-        self.status = 'AT HUB, START OF DAY'
+        self.status = ' AT HUB, START OF DAY'
 
         # Runs the sort_package method to order packages by delivery order, 
         # Also finds and sets the miles to the next package in the list.  
@@ -68,7 +60,7 @@ class Truck:
         Space-time complexity = O(1)
         '''
         self.current_location = self.cargo[0].address_id
-        self.warehouse.update_package(self.cargo[0], f'DELIVERED at {self.time.time()} on truck #{self.number}')
+        self.warehouse.update_package(self.cargo[0], f' DELIVERED at {self.time.time()} on truck #{self.number}')
         self.cargo.pop(0)
         self.find_miles_to_next()
 
