@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import List
 
 @dataclass
 class Package:
@@ -24,7 +25,7 @@ class Package:
 
         Space-time complexity = O(1)
         '''
-        return f'ID = {self.package_id:>02}\t\tAddress = [{self.address_id:>02}] {self.address:>39} {self.city:>16},{self.state:<2} {self.zip_code:<15}Weight = {self.weight:<3}\t\tInstruction = {self.instructions:<40}\t\tStatus = {self.status}'
+        return f'ID = {self.package_id:>02}\t\tAddress = [{self.address_id:>02}] {self.address:>39} {self.city:>16},{self.state:<2} {self.zip_code:<15}Weight = {self.weight:<3}\t\tInstruction = {self.instructions:<60}\t\tStatus = {self.status}'
 
     def __eq__(self, other):
         '''
@@ -34,4 +35,3 @@ class Package:
         Space-time complexity = O(1)
         '''
         return self.package_id == other.package_id
-    

@@ -1,17 +1,18 @@
 from datetime import datetime, timedelta
 from Hash_Table import HashTable
+from Package import Package 
 from Truck import Truck
 import re
 
 # Creates the global variables for this project (Hash Table, Time, Trucks)
 receiveing = HashTable()
-global_time = datetime(2020,1,1,8,00)
-truck1 = Truck(receiveing.handload_truck_1(), datetime(2020,1,1,9,5), 1, receiveing)
-truck2 = Truck(receiveing.handload_truck_2(), datetime(2020,1,1,8,00), 2, receiveing)
-truck3 = Truck(receiveing.handload_truck_3(), datetime(2020,1,1,23,59), 3, receiveing)
+global_time = datetime(2021,1,10,8,00)
+truck1 = Truck(receiveing.handload_truck_1(), datetime(2021,1,10,9,5), 1, receiveing)
+truck2 = Truck(receiveing.handload_truck_2(), datetime(2021,1,10,8,00), 2, receiveing)
+truck3 = Truck(receiveing.handload_truck_3(), datetime(2021,1,10,23,59), 3, receiveing)
 
 
-def run_deliveries(delivery_time = datetime(2020,1,1,23,59)):
+def run_deliveries(delivery_time = datetime(2021,1,10,23,59)):
     '''
     Runs the deliveries of all 3 trucks until global time matches delivery time.  
     Starts trucks at the appropriate times, including truck 3 which will leave when another comes back.
@@ -29,7 +30,7 @@ def run_deliveries(delivery_time = datetime(2020,1,1,23,59)):
             truck3.time = global_time
 
         # Update package 9 at 10:20 AM
-        if global_time == datetime(2020,1,1,10,20):
+        if global_time == datetime(2021,1,10,10,20):
             receiveing.update_package_nine()
 
         # Moves each truck 0.1 miles & 20 seconds if there are more deliveries for it to make.  
@@ -67,7 +68,7 @@ def deliver_packages_to_time():
     if match and match.lastindex == 2:
         hour = int(match.group(1))
         minute = int(match.group(2))
-        run_deliveries(datetime(2020,1,1,hour,minute))
+        run_deliveries(datetime(2021,1,10,hour,minute))
 
     # If 2 matches are not found, run the run_deliveries method which will default to EOD
     else:
@@ -90,6 +91,7 @@ def print_status():
 
     # Waits for user to press enter before moving on
     input('\nPress enter to continue...')
+
 
 def main():
     '''
@@ -121,7 +123,6 @@ def main():
         # 3) Lookup package based on ID
         elif selection == '3':
             packageId = input('Enter the package ID: ')
-            
             package = receiveing.retrieve_package(int(packageId))
             package = str(package.__init__)
             id = re.search("package_id=(.+?),", package).group(1)
@@ -131,16 +132,25 @@ def main():
             deadline = re.search(" deadline='(.+?)',", package).group(1)
             status = re.search(", status='(.+?)',", package).group(1)
             try:
-                instructions = re.search('AAA(.+?)ZZZ', package).group(1)
+                instructions = re.search(", instructions='(.+?)'", package).group(1)
             except AttributeError:
-                # AAA, ZZZ not found in the original string
-                instructions = '-' # apply your error handling
-
-            print('ID       ADDRESS                                      CITY             ZIP      DEADLINE         STATUS                                   INSTRUCTIONS\n'
-                  '------------------------------------------------------------------------------------------------------------------------------------------------------\n'
-                  '%s     %s                           %s            %s        %s         %s                                         %s                                    ' % (id, address, city, zip_code, deadline, status, instructions))
+                instructions = '-' 
+            
+            idstring = "ID"
+            addressstring = "ADDRESS"
+            citystring = "CITY"
+            zipstring = "ZIP"
+            deadlinestring = "DEADLINE"
+            statusstring = "STATUS"
+            instructionstring = "INSTRUCTIONS" 
+            return_string = '---------------------------------------------------------------------------------------------------------------------------------------------------------------\n'
+            return_string += f'{idstring:^10}|{addressstring:^42}|{citystring:^20}|{zipstring:^10}|{deadlinestring:^10}|{statusstring:^35}|{instructionstring:^20}\n'
+            return_string += '---------------------------------------------------------------------------------------------------------------------------------------------------------------\n'
+            return_string += f'{id:^10}|{address:^42}|{city:^20}|{zip_code:^10}|{deadline:^10}|{status:^35}| {instructions:^20}\n'
+            print(package)
+            print(return_string)            
             input()
-        
+
         # 0) Exit program
         elif selection == '0':
             exit()

@@ -1,9 +1,5 @@
-
 from Package import Package
 import csv
-
-
-
 class HashTable:
     '''
     Hash table that stores all package data.
@@ -256,9 +252,6 @@ class HashTable:
             if type(p) == Package and attribute == 'address' and value in p.address.strip().lower():
                 found.append(p)
 
-            elif type(p) == Package and attribute == 'address_id' and value in p.address_id.strip().lower():
-                found.append(p)
-
             # Attributes = deadline
             elif type(p) == Package and attribute == 'deadline' and value in p.deadline.strip().lower():
                 found.append(p)
@@ -312,12 +305,35 @@ class HashTable:
         zipstring = "ZIP"
         deadlinestring = "DEADLINE"
         statusstring = "STATUS"
-        instructionstring = "INSTRUCTIONS" 
-        return_string = f'{idstring:^10}|{addressstring:^42}|{citystring:^20}|{zipstring:^10}|{deadlinestring:^10}|{statusstring:^35}|{instructionstring:^20}\n'
+        instructionstring = "INSTRUCTIONS"
+         
+        return_string = '---------------------------------------------------------------------------------------------------------------------------------------------------------------\n'
+        return_string += f'{idstring:^10}|{addressstring:^42}|{citystring:^20}|{zipstring:^10}|{deadlinestring:^10}|{statusstring:^35}|{instructionstring:^20}\n'
         return_string += '---------------------------------------------------------------------------------------------------------------------------------------------------------------\n'
-
         for p in self.package_table:
             if type(p) == Package:
-                return_string += f'{p.package_id:^10}|{p.address:^42}|{p.city:^20}|{p.zip_code:^10}|{p.deadline:^10}|{p.status:^35}|{p.instructions:^20}\n'
-        
+                return_string += f'{p.package_id:^10}|{p.address:^42}|{p.city:^20}|{p.zip_code:^10}|{p.deadline:^10}|{p.status:^35}| {p.instructions:^20}\n'
+        return_string += '---------------------------------------------------------------------------------------------------------------------------------------------------------------\n'
         return return_string
+    
+    # def __repr__(self):
+    #     '''
+    #     Returns a string of a table of the package's attributes.  
+
+    #     Space-time complexity = O(N)
+    #     '''
+    #     idstring = "ID"
+    #     addressstring = "ADDRESS"
+    #     citystring = "CITY"
+    #     zipstring = "ZIP"
+    #     deadlinestring = "DEADLINE"
+    #     statusstring = "STATUS"
+    #     instructionstring = "INSTRUCTIONS" 
+    #     return_string = f'{idstring:^10}|{addressstring:^42}|{citystring:^20}|{zipstring:^10}|{deadlinestring:^10}|{statusstring:^35}|{instructionstring:^20}\n'
+    #     return_string += '---------------------------------------------------------------------------------------------------------------------------------------------------------------\n'
+
+    #     for p in self.package_table:
+    #         if type(p) == Package:
+    #             return_string += f'{p.package_id:^10}|{p.address:^42}|{p.city:^20}|{p.zip_code:^10}|{p.deadline:^10}|{p.status:^35}|{p.instructions:^20}\n'
+        
+    #     return return_string
