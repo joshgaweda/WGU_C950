@@ -11,9 +11,9 @@ clear = lambda: os.system('clear') & os.system('cls')
 # Creates the global variables for this project (Hash Table, Time, Trucks)
 receiveing = HashTable()
 global_time = datetime(2021,1,10,8,00)
-truck1 = Truck(receiveing.load_truck_1(), datetime(2021,1,10,9,5), 1, receiveing)
-truck2 = Truck(receiveing.load_truck_2(), datetime(2021,1,10,8,00), 2, receiveing)
-truck3 = Truck(receiveing.load_truck_3(), datetime(2021,1,10,23,59), 3, receiveing)
+truck1 = Truck(receiveing.init1(), datetime(2021,1,10,9,5), 1, receiveing)
+truck2 = Truck(receiveing.init2(), datetime(2021,1,10,8,00), 2, receiveing)
+truck3 = Truck(receiveing.init3(), datetime(2021,1,10,23,59), 3, receiveing)
 
 def start_deliveries(delivery_time = datetime(2021,1,10,23,59)):
     # Space-time complexity = O(N)
