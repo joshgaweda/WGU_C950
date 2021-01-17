@@ -15,21 +15,16 @@ truck1 = Truck(receiveing.load_truck_1(), datetime(2021,1,10,9,5), 1, receiveing
 truck2 = Truck(receiveing.load_truck_2(), datetime(2021,1,10,8,00), 2, receiveing)
 truck3 = Truck(receiveing.load_truck_3(), datetime(2021,1,10,23,59), 3, receiveing)
 
-
 def start_deliveries(delivery_time = datetime(2021,1,10,23,59)):
-    '''
-    Runs the deliveries of all 3 trucks until global time matches delivery time.  
-    Starts trucks at the appropriate times, including truck 3 which will leave when another comes back.
-    Stops running deliveries once every package is delivered and all trucks returned to hub.  
-    Also updates package 9 at appropriate time.
+    # Space-time complexity = O(N)
+    # Runs all deliveries until global time matches the delivery time.  
+    # This function will start each truck at the appropriate time, including truck 3 which will leave when another comes back.
+    # Stops running deliveries once every package is delivered and all trucks returned to hub.  
 
-    Space-time complexity = O(N)
-    '''
     global global_time
-
     while global_time < delivery_time:
 
-        # Starts truck 3 once another truck comes back to hub
+        # Starts truck 3
         if truck3.status == 'AT HUB, START OF DAY' and truck2.status == 'Deliveries complete' or truck1.status == 'Deliveries complete':
             truck3.time = global_time
 
@@ -37,8 +32,8 @@ def start_deliveries(delivery_time = datetime(2021,1,10,23,59)):
         if global_time == datetime(2021,1,10,10,20):
             receiveing.update_package_nine()
 
-        # Moves each truck 0.1 miles & 20 seconds if there are more deliveries for it to make.  
-        # (Time does not increment for truck if there is no more miles to drive)
+        # If a truck has more deliveries to make, move the truck 0.1 miles & 20 seconds   
+        # If there is no more miles to drive for that truck time does not increment 
         if global_time == truck1.time:
             truck1.tick()
         if global_time == truck2.time:
@@ -46,46 +41,34 @@ def start_deliveries(delivery_time = datetime(2021,1,10,23,59)):
         if global_time == truck3.time:
             truck3.tick()
 
-        # If all deliveries are completed, exit while loop
+        # Deliveries completed
         if truck1.status == 'Deliveries complete' and truck2.status == 'Deliveries complete' and truck3.status == 'Deliveries complete':
             break
 
-        # Increments global time by 20 seconds (the time it takes to drive 0.1 miles)
+        # Increment global time 20 seconds
         global_time  += timedelta(0, 20)
 
     # Sets Global time to equal deliver time, 
-    #  needed in case the delivery time exceeds time needed to deliver packages
     global_time = delivery_time
 
 def time_of_day_prompt():
-    '''
-    Prompts user to enter a time and runs the method start_deliveries to that time.  
-    If no time is entered, or an invalid time is entered, then start_deliveries will default to EOD.  
+    # Prompts user for the time of day to check truck status against.  
+    # If nothing is is entered, or an invalid time is entered, then will default to EOD.  
+    # Space-time complexity = O(N)
 
-    Space-time complexity = O(N)
-    '''
-    # Prompts user to enter time and uses regular expression pattern to find the numbers in the answer given
-    input_time = input("Please enter a time in hours (24 hour format) and minutes [hh:mm]\nOr press <enter> to set time to EOD - ")
+    input_time = input("Enter a time in 24 hour format [hh:mm]\nOr press <enter> to set time to EOD - ")
     match = re.match(r'(\d+)\D+(\d+)', input_time)
 
-    # If 2 matches are found (hours & minutes), run the method start_deliveries using the prompted time as argument
     if match and match.lastindex == 2:
         hour = int(match.group(1))
         minute = int(match.group(2))
         start_deliveries(datetime(2021,1,10,hour,minute))
-
-    # If 2 matches are not found, run the start_deliveries method which will default to EOD
     else:
         start_deliveries()
 
 def print_status():
-    '''
-    Prints status of trucks & hash table.
-
-    Space-time complexity = O(1)
-    '''
-
-    # Prints everything
+    # Space-time complexity = O(1)
+    # Prints hash table and truck status.
     clear
     print(receiveing)
     print(truck1)
@@ -93,18 +76,41 @@ def print_status():
     print(truck3)
     print(f'\nTotal miles driven = {round(truck1.miles_traveled + truck2.miles_traveled + truck3.miles_traveled, 1)}')
     print(f'Current time = {global_time.time()}')
-
-    # Waits for user to press enter before moving on
     input('\nPress enter to continue...')
+
+def print_package():
+    packageId = input('Enter the package ID: ')
+    package = receiveing.retrieve_package(int(packageId))
+    package = str(package.__init__)
+    id = re.search("package_id=(.+?),", package).group(1)
+    address = re.search(", address='(.+?)',", package).group(1)
+    city = re.search(", city='(.+?)',", package).group(1)
+    zip_code = re.search(" zip_code='(.+?)',", package).group(1)
+    deadline = re.search(" deadline='(.+?)',", package).group(1)
+    status = re.search(", status='(.+?)',", package).group(1)
+    try:
+        instructions = re.search(", instructions='(.+?)'", package).group(1)
+    except AttributeError:
+        instructions = '-' 
+    
+    idstring = "ID"
+    addressstring = "ADDRESS"
+    citystring = "CITY"
+    zipstring = "ZIP"
+    deadlinestring = "DEADLINE"
+    statusstring = "STATUS"
+    instructionstring = "INSTRUCTIONS" 
+    return_string = '---------------------------------------------------------------------------------------------------------------------------------------------------------------\n'
+    return_string += f'{idstring:^10}|{addressstring:^42}|{citystring:^20}|{zipstring:^10}|{deadlinestring:^10}|{statusstring:^35}|{instructionstring:^20}\n'
+    return_string += '---------------------------------------------------------------------------------------------------------------------------------------------------------------\n'
+    return_string += f'{id:^10}|{address:^42}|{city:^20}|{zip_code:^10}|{deadline:^10}|{status:^35}| {instructions:^20}\n'
+    print(return_string)            
+    input()
 
 
 def main():
-    '''
-    Main controller of the program, controls the UI.  
-    Prompts the user with options for program and runs each method accordingly.
-    '''
-
-    # Main loop.  Prompts user for actions until exit is chosen. 
+    # Main program method that controls interface.  
+    # Prompts user to select an aoption
     while True:
         
         print(f'''---------------------------------------------------------------------------------------------------------------------------------------------------------------\n 
@@ -118,43 +124,17 @@ def main():
 
         selection = input('Please select an option: ').strip()
 
-        # 1) Set time of day
+        # 1) Set time
         if selection == '1':
             time_of_day_prompt()
         
-        # 2) Print current package & truck status
+        # 2) Print current package & truck status(ALL)
         elif selection == '2':
             print_status()
 
         # 3) Lookup package based on ID
         elif selection == '3':
-            packageId = input('Enter the package ID: ')
-            package = receiveing.retrieve_package(int(packageId))
-            package = str(package.__init__)
-            id = re.search("package_id=(.+?),", package).group(1)
-            address = re.search(", address='(.+?)',", package).group(1)
-            city = re.search(", city='(.+?)',", package).group(1)
-            zip_code = re.search(" zip_code='(.+?)',", package).group(1)
-            deadline = re.search(" deadline='(.+?)',", package).group(1)
-            status = re.search(", status='(.+?)',", package).group(1)
-            try:
-                instructions = re.search(", instructions='(.+?)'", package).group(1)
-            except AttributeError:
-                instructions = '-' 
-            
-            idstring = "ID"
-            addressstring = "ADDRESS"
-            citystring = "CITY"
-            zipstring = "ZIP"
-            deadlinestring = "DEADLINE"
-            statusstring = "STATUS"
-            instructionstring = "INSTRUCTIONS" 
-            return_string = '---------------------------------------------------------------------------------------------------------------------------------------------------------------\n'
-            return_string += f'{idstring:^10}|{addressstring:^42}|{citystring:^20}|{zipstring:^10}|{deadlinestring:^10}|{statusstring:^35}|{instructionstring:^20}\n'
-            return_string += '---------------------------------------------------------------------------------------------------------------------------------------------------------------\n'
-            return_string += f'{id:^10}|{address:^42}|{city:^20}|{zip_code:^10}|{deadline:^10}|{status:^35}| {instructions:^20}\n'
-            print(return_string)            
-            input()
+            print_package()
 
         # 0) Exit program
         elif selection == '0':
