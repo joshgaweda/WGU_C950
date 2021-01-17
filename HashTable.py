@@ -23,9 +23,32 @@ class HashTable:
         # Loads data from csv into tables & sets num_addresses
         self.table_from_csv()
         self.graph_from_csv()
-        self.count_num_addresses()
+        self.address_count()
 
-    def count_num_addresses(self):
+    def __repr__(self):
+        '''
+        Returns a string of a table of the package's attributes.  
+
+        Space-time complexity = O(N)
+        '''
+        idstring = "ID"
+        addressstring = "ADDRESS"
+        citystring = "CITY"
+        zipstring = "ZIP"
+        deadlinestring = "DEADLINE"
+        statusstring = "STATUS"
+        instructionstring = "INSTRUCTIONS"
+         
+        return_string = '---------------------------------------------------------------------------------------------------------------------------------------------------------------\n'
+        return_string += f'{idstring:^10}|{addressstring:^42}|{citystring:^20}|{zipstring:^10}|{deadlinestring:^10}|{statusstring:^35}|{instructionstring:^20}\n'
+        return_string += '---------------------------------------------------------------------------------------------------------------------------------------------------------------\n'
+        for p in self.package_table:
+            if type(p) == Package:
+                return_string += f'{p.package_id:^10}|{p.address:^42}|{p.city:^20}|{p.zip_code:^10}|{p.deadline:^10}|{p.status:^35}| {p.instructions:^20}\n'
+        return_string += '---------------------------------------------------------------------------------------------------------------------------------------------------------------\n'
+        return return_string
+
+    def address_count(self):
         '''
         Updates the number of addresses found in package_table
 
@@ -57,9 +80,9 @@ class HashTable:
         self.package_table[bucket] = package
 
         # Updates num_addresses
-        self.count_num_addresses()
+        self.address_count()
 
-    def retrieve_package(self, package_id):
+    def retrieve(self, package_id):
         '''
         Retrieves package by ID.  
 
@@ -91,7 +114,7 @@ class HashTable:
         
         # Loops through ID list and appends package to package list
         for p_id in truck_1:
-            packages.append(self.retrieve_package(p_id))
+            packages.append(self.retrieve(p_id))
         
         # Returns package list
         return packages
@@ -112,7 +135,7 @@ class HashTable:
         
         # Loops through ID list and appends package to package list
         for p_id in truck_2:
-            packages.append(self.retrieve_package(p_id))
+            packages.append(self.retrieve(p_id))
         
         # Returns package list
         return packages
@@ -134,7 +157,7 @@ class HashTable:
 
         # Loops through ID list and appends package to package list
         for p_id in truck_3:
-            packages.append(self.retrieve_package(p_id))
+            packages.append(self.retrieve(p_id))
         
         # Returns package list
         return packages
@@ -191,25 +214,6 @@ class HashTable:
                 # Appends current row to distance graph
                 self.graph.append(current_row)
 
-    def update_package_nine(self):
-        '''
-        Corrects the address for package #9.  
-
-        Space-time complexity = O(1)
-        '''
-
-        # Pulls package from hash table
-        nine = self.retrieve_package(9)
-        
-        # Updates attributes
-        nine.address_id = 19
-        nine.address = '410 S State St'
-        nine.city = 'Salt Lake City'
-        nine.zip = '84111'
-
-        # Insets package back into hash table
-        self.insert_package(nine)
-
     def update_package(self, package, value, attribute = 'status'):
         '''
         Updates the <attribute> of the <package> with <value>
@@ -229,6 +233,25 @@ class HashTable:
             package.weight = value
         elif attribute == 'status':
             package.status = value
+    
+    def pack9(self):
+        '''
+        Corrects the address for package #9.  
+
+        Space-time complexity = O(1)
+        '''
+
+        # Pulls package from hash table
+        nine = self.retrieve(9)
+        
+        # Updates attributes
+        nine.address_id = 19
+        nine.address = '410 S State St'
+        nine.city = 'Salt Lake City'
+        nine.zip = '84111'
+
+        # Insets package back into hash table
+        self.insert_package(nine)
 
     def lookup_packages(self, attribute, value):
         '''
@@ -275,26 +298,4 @@ class HashTable:
         # Returns list of all packages found in search above
         return found
 
-    def __repr__(self):
-        '''
-        Returns a string of a table of the package's attributes.  
-
-        Space-time complexity = O(N)
-        '''
-        idstring = "ID"
-        addressstring = "ADDRESS"
-        citystring = "CITY"
-        zipstring = "ZIP"
-        deadlinestring = "DEADLINE"
-        statusstring = "STATUS"
-        instructionstring = "INSTRUCTIONS"
-         
-        return_string = '---------------------------------------------------------------------------------------------------------------------------------------------------------------\n'
-        return_string += f'{idstring:^10}|{addressstring:^42}|{citystring:^20}|{zipstring:^10}|{deadlinestring:^10}|{statusstring:^35}|{instructionstring:^20}\n'
-        return_string += '---------------------------------------------------------------------------------------------------------------------------------------------------------------\n'
-        for p in self.package_table:
-            if type(p) == Package:
-                return_string += f'{p.package_id:^10}|{p.address:^42}|{p.city:^20}|{p.zip_code:^10}|{p.deadline:^10}|{p.status:^35}| {p.instructions:^20}\n'
-        return_string += '---------------------------------------------------------------------------------------------------------------------------------------------------------------\n'
-        return return_string
     

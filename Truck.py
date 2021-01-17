@@ -1,17 +1,5 @@
 import datetime
 
-class Edge:
-    '''
-    Helper class that represents edges in a tree.  
-    Used with the Truck class when finding the minimum spanning tree
-    '''
-
-    def __init__(self, fro, to, weight):
-        self.fro = fro
-        self.to = to
-        self.weight = weight
-
-
 class Truck:
     '''A truck class that stores and delivers packages'''
 
@@ -34,10 +22,29 @@ class Truck:
 
         # Runs the sort_package method to order packages by delivery order, 
         # Also finds and sets the miles to the next package in the list.  
-        self.sort_packages()
-        self.find_miles_to_next()
+        self.sort()
+        self.distance_to_next_stop()
 
-    def find_miles_to_next(self):
+    def __repr__(self):
+        '''
+        Returns a string for the status of the truck.  
+        Includes total packages on truck, miles traveled & time.
+
+        Space-time complexity = O(1)
+        '''
+
+        return_string = f'Truck #{self.number} -- {self.status}\n'
+        return_string += f'Package count =\t{len(self.cargo)}\n'
+        return_string += f'Miles traveled =\t{round(self.miles_traveled, 1)}\n'
+    
+        if len(self.cargo) == 0 and round(self.miles_traveled, 1) == round(self.miles_to_next, 1):
+            return_string += f''
+        else: 
+            return_string += f'Miles to next = {round(self.miles_to_next, 1)}\n'
+
+        return return_string
+
+    def distance_to_next_stop(self):
         '''
         Finds the miles to the next package and updates miles_to_next.
 
@@ -52,7 +59,7 @@ class Truck:
         else:
             self.miles_to_next += float(self.address_book[int(self.current_location)][0])
 
-    def deliver_package(self):
+    def deliver(self):
         '''
         Delivers the next package in cargo.  
         Updates the current location, package status in hash table, and miles to next.  
@@ -62,9 +69,9 @@ class Truck:
         self.current_location = self.cargo[0].address_id
         self.warehouse.update_package(self.cargo[0], f'DELIVERED at {self.time.time()} on truck #{self.number}')
         self.cargo.pop(0)
-        self.find_miles_to_next()
+        self.distance_to_next_stop()
 
-    def tick(self):
+    def move(self):
         '''
         Moves the truck 0.1 miles and delivers a package if at location.  
 
@@ -77,7 +84,7 @@ class Truck:
 
             # If miles traveled matches miles to next (therefor at destination), deliver package
             while round(self.miles_traveled, 1) == round(self.miles_to_next, 1):
-                self.deliver_package()
+                self.deliver()
 
         # If there are no more packages and truck not at hub, return to hub
         elif len(self.cargo) == 0 and round(self.miles_traveled, 1) != round(self.miles_to_next, 1):
@@ -89,7 +96,7 @@ class Truck:
             self.current_location = 0
             self.status = 'Deliveries complete'
 
-    def sort_packages(self):
+    def sort(self):
         '''
         Sorts packages in cargo in order of the shortest path.
 
@@ -271,21 +278,15 @@ class Truck:
         self.time += driven
         self.miles_traveled += miles
 
-    def __repr__(self):
-        '''
-        Returns a string for the status of the truck.  
-        Includes total packages on truck, miles traveled & time.
 
-        Space-time complexity = O(1)
-        '''
 
-        return_string = f'Truck #{self.number} -- {self.status}\n'
-        return_string += f'Package count =\t{len(self.cargo)}\n'
-        return_string += f'Miles traveled =\t{round(self.miles_traveled, 1)}\n'
-    
-        if len(self.cargo) == 0 and round(self.miles_traveled, 1) == round(self.miles_to_next, 1):
-            return_string += f''
-        else: 
-            return_string += f'Miles to next = {round(self.miles_to_next, 1)}\n'
+class Edge:
+    '''
+    Helper class that represents edges in a tree.  
+    Used with the Truck class when finding the minimum spanning tree
+    '''
 
-        return return_string
+    def __init__(self, fro, to, weight):
+        self.fro = fro
+        self.to = to
+        self.weight = weight

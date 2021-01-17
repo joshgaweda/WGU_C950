@@ -30,16 +30,16 @@ def start_deliveries(delivery_time = datetime(2021,1,10,23,59)):
 
         # Update package 9 at 10:20 AM
         if global_time == datetime(2021,1,10,10,20):
-            receiveing.update_package_nine()
+            receiveing.pack9()
 
         # If a truck has more deliveries to make, move the truck 0.1 miles & 20 seconds   
         # If there is no more miles to drive for that truck time does not increment 
         if global_time == truck1.time:
-            truck1.tick()
+            truck1.move()
         if global_time == truck2.time:
-            truck2.tick()
+            truck2.move()
         if global_time == truck3.time:
-            truck3.tick()
+            truck3.move()
 
         # Deliveries completed
         if truck1.status == 'Deliveries complete' and truck2.status == 'Deliveries complete' and truck3.status == 'Deliveries complete':
@@ -80,7 +80,7 @@ def print_status():
 
 def print_package():
     packageId = input('Enter the package ID: ')
-    package = receiveing.retrieve_package(int(packageId))
+    package = receiveing.retrieve(int(packageId))
     package = str(package.__init__)
     id = re.search("package_id=(.+?),", package).group(1)
     address = re.search(", address='(.+?)',", package).group(1)
