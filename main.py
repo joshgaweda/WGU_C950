@@ -11,12 +11,12 @@ clear = lambda: os.system('clear') & os.system('cls')
 # Creates the global variables for this project (Hash Table, Time, Trucks)
 receiveing = HashTable()
 global_time = datetime(2021,1,10,8,00)
-truck1 = Truck(receiveing.handload_truck_1(), datetime(2021,1,10,9,5), 1, receiveing)
-truck2 = Truck(receiveing.handload_truck_2(), datetime(2021,1,10,8,00), 2, receiveing)
-truck3 = Truck(receiveing.handload_truck_3(), datetime(2021,1,10,23,59), 3, receiveing)
+truck1 = Truck(receiveing.load_truck_1(), datetime(2021,1,10,9,5), 1, receiveing)
+truck2 = Truck(receiveing.load_truck_2(), datetime(2021,1,10,8,00), 2, receiveing)
+truck3 = Truck(receiveing.load_truck_3(), datetime(2021,1,10,23,59), 3, receiveing)
 
 
-def run_deliveries(delivery_time = datetime(2021,1,10,23,59)):
+def start_deliveries(delivery_time = datetime(2021,1,10,23,59)):
     '''
     Runs the deliveries of all 3 trucks until global time matches delivery time.  
     Starts trucks at the appropriate times, including truck 3 which will leave when another comes back.
@@ -57,10 +57,10 @@ def run_deliveries(delivery_time = datetime(2021,1,10,23,59)):
     #  needed in case the delivery time exceeds time needed to deliver packages
     global_time = delivery_time
 
-def deliver_packages_to_time():
+def time_of_day_prompt():
     '''
-    Prompts user to enter a time and runs the method run_deliveries to that time.  
-    If no time is entered, or an invalid time is entered, then run_deliveries will default to EOD.  
+    Prompts user to enter a time and runs the method start_deliveries to that time.  
+    If no time is entered, or an invalid time is entered, then start_deliveries will default to EOD.  
 
     Space-time complexity = O(N)
     '''
@@ -68,15 +68,15 @@ def deliver_packages_to_time():
     input_time = input("Please enter a time in hours (24 hour format) and minutes [hh:mm]\nOr press <enter> to set time to EOD - ")
     match = re.match(r'(\d+)\D+(\d+)', input_time)
 
-    # If 2 matches are found (hours & minutes), run the method run_deliveries using the prompted time as argument
+    # If 2 matches are found (hours & minutes), run the method start_deliveries using the prompted time as argument
     if match and match.lastindex == 2:
         hour = int(match.group(1))
         minute = int(match.group(2))
-        run_deliveries(datetime(2021,1,10,hour,minute))
+        start_deliveries(datetime(2021,1,10,hour,minute))
 
-    # If 2 matches are not found, run the run_deliveries method which will default to EOD
+    # If 2 matches are not found, run the start_deliveries method which will default to EOD
     else:
-        run_deliveries()
+        start_deliveries()
 
 def print_status():
     '''
@@ -120,7 +120,7 @@ def main():
 
         # 1) Set time of day
         if selection == '1':
-            deliver_packages_to_time()
+            time_of_day_prompt()
         
         # 2) Print current package & truck status
         elif selection == '2':

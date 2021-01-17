@@ -74,7 +74,7 @@ class HashTable:
             package = self.package_table[bucket]
             return package
 
-    def handload_truck_1(self):
+    def load_truck_1(self):
         '''
         Loads truck 1 based on package ID.
         This truck primarily holds the delayed packages
@@ -96,7 +96,7 @@ class HashTable:
         # Returns package list
         return packages
 
-    def handload_truck_2(self):
+    def load_truck_2(self):
         '''
         Loads truck 2 based on package ID.
         This truck primarily holds packages restricted to this truck,
@@ -117,7 +117,7 @@ class HashTable:
         # Returns package list
         return packages
 
-    def handload_truck_3(self):
+    def load_truck_3(self):
         '''
         Loads truck 3 based on package ID.
         This truck holds packages not found in other trucks.
