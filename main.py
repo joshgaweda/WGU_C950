@@ -1,8 +1,12 @@
+# Josh Gaweda Student ID #: 001150997
+
 from datetime import datetime, timedelta
-from Hash_Table import HashTable
+from HashTable import HashTable
 from Package import Package 
 from Truck import Truck
 import re
+import os 
+clear = lambda: os.system('clear') & os.system('cls')
 
 # Creates the global variables for this project (Hash Table, Time, Trucks)
 receiveing = HashTable()
@@ -82,11 +86,12 @@ def print_status():
     '''
 
     # Prints everything
+    clear
     print(receiveing)
     print(truck1)
     print(truck2)
     print(truck3)
-    print(f'\nTotal miles driven = {round(truck1.millage + truck2.millage + truck3.millage, 1)}')
+    print(f'\nTotal miles driven = {round(truck1.miles_traveled + truck2.miles_traveled + truck3.miles_traveled, 1)}')
     print(f'Current time = {global_time.time()}')
 
     # Waits for user to press enter before moving on
@@ -101,7 +106,8 @@ def main():
 
     # Main loop.  Prompts user for actions until exit is chosen. 
     while True:
-        print(f''' 
+        
+        print(f'''---------------------------------------------------------------------------------------------------------------------------------------------------------------\n 
         Current time = {global_time.hour}:{global_time.minute:>02}
 
         1) Set time of day
@@ -147,7 +153,6 @@ def main():
             return_string += f'{idstring:^10}|{addressstring:^42}|{citystring:^20}|{zipstring:^10}|{deadlinestring:^10}|{statusstring:^35}|{instructionstring:^20}\n'
             return_string += '---------------------------------------------------------------------------------------------------------------------------------------------------------------\n'
             return_string += f'{id:^10}|{address:^42}|{city:^20}|{zip_code:^10}|{deadline:^10}|{status:^35}| {instructions:^20}\n'
-            print(package)
             print(return_string)            
             input()
 

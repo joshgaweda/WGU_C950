@@ -4,7 +4,8 @@ from typing import List
 @dataclass
 class Package:
     '''
-    Holds data on packages.  
+    Holds data on packages and information about each attribute associated with it. 
+    The __str__ and __eq__ methods are also overridden in order for better printouts in the CLI & to compare packages against their ID's.
     '''
 
     package_id: int

@@ -15,7 +15,7 @@ The program is broken down into 4 main files:
 
 Methods for this file include basic CRUD (create, read, update, delete) commands, formatted output, and the instructions of h[ow to separate each package into appropriate trucks.
 
-<u>**Truck.py**</u>: The truck class is responsible for creating and executing the delivery route for the packages passed passed into it. Each truck has attributes for total millage driven, total time driven, current status, current position, and miles from the next position. A list of packages is dynamically sorted into an efficient delivery order using an implementation of Primm's algorithm (described in later sections).
+<u>**Truck.py**</u>: The truck class is responsible for creating and executing the delivery route for the packages passed passed into it. Each truck has attributes for total miles traveled driven, total time driven, current status, current position, and miles from the next position. A list of packages is dynamically sorted into an efficient delivery order using an implementation of Primm's algorithm (described in later sections).
 
 <u>**Main.py**</u>: Main is the entry point for the user and contains the CLI used to interact with the program. Upon startup a global time variable is created and set to 8 AM, trucks are initialized and loaded with their packages, and the user is prompted to pick from a list of 10 options. The user has the ability to change the time of day, insert packages, search for packages, and receive a detailed printout of package and truck status details.
 

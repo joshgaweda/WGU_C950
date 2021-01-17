@@ -27,7 +27,7 @@ class Truck:
         self.cargo = payload
         self.number = truck_num
         self.edges = []
-        self.millage = 0.0
+        self.miles_traveled = 0.0
         self.current_location = 0
         self.miles_to_next = 0.0
         self.status = 'AT HUB, START OF DAY'
@@ -44,11 +44,11 @@ class Truck:
         Space-time complexity = O(1)
         '''
 
-        # If there are packages left to deliver, find millage from current location to next
+        # If there are packages left to deliver, find miles traveled from current location to next
         if len(self.cargo) > 0:
             self.miles_to_next += float(self.address_book[int(self.current_location)][int(self.cargo[0].address_id)])
 
-        # Otherwise find millage from current location to hub
+        # Otherwise find miles traveled from current location to hub
         else:
             self.miles_to_next += float(self.address_book[int(self.current_location)][0])
 
@@ -75,12 +75,12 @@ class Truck:
             self.status = f'Traveling to location {self.cargo[0].address_id}'
             self.travel(0.1)
 
-            # If millage matches miles to next (therefor at destination), deliver package
-            while round(self.millage, 1) == round(self.miles_to_next, 1):
+            # If miles traveled matches miles to next (therefor at destination), deliver package
+            while round(self.miles_traveled, 1) == round(self.miles_to_next, 1):
                 self.deliver_package()
 
         # If there are no more packages and truck not at hub, return to hub
-        elif len(self.cargo) == 0 and round(self.millage, 1) != round(self.miles_to_next, 1):
+        elif len(self.cargo) == 0 and round(self.miles_traveled, 1) != round(self.miles_to_next, 1):
             self.status = f'Returning to hub'
             self.travel(0.1)
         
@@ -259,7 +259,7 @@ class Truck:
 
     def travel(self, miles):
         '''
-        Updates current time and millage of truck based on miles driven.
+        Updates current time and miles traveled of truck based on miles driven.
         All trucks within this project drive at a constant 18 MPH,
         or 200 seconds per mile.
 
@@ -269,26 +269,23 @@ class Truck:
         SECONDS_PER_MILE = 200
         driven = datetime.timedelta(0, SECONDS_PER_MILE * miles)
         self.time += driven
-        self.millage += miles
+        self.miles_traveled += miles
 
     def __repr__(self):
         '''
         Returns a string for the status of the truck.  
-        Includes total packages on truck, millage & time.
+        Includes total packages on truck, miles traveled & time.
 
         Space-time complexity = O(1)
         '''
 
         return_string = f'Truck #{self.number} -- {self.status}\n'
         return_string += f'Package count =\t{len(self.cargo)}\n'
-        return_string += f'Millage =\t{round(self.millage, 1)}\n'
-
-        if len(self.cargo) == 0 and round(self.millage, 1) == round(self.miles_to_next, 1):
+        return_string += f'Miles traveled =\t{round(self.miles_traveled, 1)}\n'
+    
+        if len(self.cargo) == 0 and round(self.miles_traveled, 1) == round(self.miles_to_next, 1):
             return_string += f''
         else: 
             return_string += f'Miles to next = {round(self.miles_to_next, 1)}\n'
-        
-        if self.status != 'AT HUB, START OF DAY':
-            return_string += f'Time =\t\t{self.time.time()}\n'
 
         return return_string
