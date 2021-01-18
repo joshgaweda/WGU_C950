@@ -107,7 +107,8 @@ class HashTable:
         '''
 
         # List of package ID's
-        truck_1 = [1,2,3,4,6,7,17,22,24,25,26,28,29,31,32,33,40]
+        truck_1 = [1,2,4,6,7,8,10,17,22,24,25,26,28,29,32,33,40]
+
 
         # Initializes list to store packages
         packages = []
@@ -128,8 +129,8 @@ class HashTable:
         Space-time complexity = O(N)
         '''
         # List of package ID's
-        truck_2 = [8,10,13,14,15,16,18,19,20,30,34,36,37,38,39]
-        
+        truck_2 = [3,13,14,15,16,18,19,20,30,34,36,37,38,39]
+
         # Initializes list to store packages
         packages = []
         
@@ -150,7 +151,7 @@ class HashTable:
         '''
 
         # List of package ID's
-        truck_3 = [5,9,11,12,21,23,27,35]
+        truck_3 = [5,9,11,12,21,23,27,31,35]
         
         # Initializes list to store packages
         packages = []
